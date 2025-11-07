@@ -1,0 +1,38 @@
+services:
+
+  coordinator:
+    build:
+      context: .
+      dockerfile: coordinator/coordinator.dockerfile
+    image: dev/universalis-coordinator:latest
+    ports:
+      - "8886:8888"
+    environment:
+      - KAFKA_URL=kafka1:9092
+    env_file:
+      - env-example/minio.env
+      
+  worker:
+    build:
+      context: .
+      dockerfile: worker/worker.dockerfile
+    image: dev/universalis:latest
+    environment:
+      - INGRESS_TYPE=KAFKA
+      - KAFKA_URL=kafka1:9092
+      - DISCOVERY_HOST=coordinator
+      - DISCOVERY_PORT=8888
+      - UNC_LOG_PATH=/usr/local/universalis
+      - CPUS=0
+    env_file:
+      - env-example/minio.env
+    volumes:
+      - type: 'bind'
+        source: './unc_logs'
+        target: '/usr/local/universalis/unc-logs'
+      - type: bind
+        source: ./dynamic_params
+        target: /usr/local/universalis/dynamic_params
+      - type: bind
+        source: ./self_task
+        target: /usr/local/universalis/self_task
