@@ -1,0 +1,25 @@
+import argparse
+
+
+# Method to parse command-line arguments.
+def config():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("-f", "--failure",
+                            help="Boolean flag to set or not a worker failure",
+                            default=False,
+                            action="store_true")
+    arg_parser.add_argument("-tf", "--type_failure",
+                            help="the type of failure",
+                            default="SF",
+                            action="store_true")
+    arguments = arg_parser.parse_known_args()
+    print(arguments[0])
+    
+
+    return arguments[0]
+
+
+if __name__ == "__main__":
+    args = config()
+    print(args.failure)
+    # print(args.type_failure)
