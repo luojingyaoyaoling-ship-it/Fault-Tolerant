@@ -30,7 +30,7 @@ from worker.operator_state.stateless import Stateless
 from worker.run_func_payload import RunFuncPayload
 from worker.checkpointing.uncoordinated_checkpointing import UncoordinatedCheckpointing
 
-SERVER_PORT: int = 8888 # coordianator 的端口
+SERVER_PORT: int = 8888
 DISCOVERY_HOST: str = os.environ['DISCOVERY_HOST']
 DISCOVERY_PORT: int = int(os.environ['DISCOVERY_PORT'])
 KAFKA_URL: str = os.getenv('KAFKA_URL', None)
@@ -311,26 +311,6 @@ class Worker(object):
 
     async def simple_failure(self):
         sleep_time = 48 - int(int(self.id) - 1) * (48 // (len(self.peers) + 1))
-        # match int(self.id):
-        #     case 1:
-        #         sleep_time =50
-        #     case 2:
-        #         return
-        #         # sleep_time = 40
-        #     case 3:
-        #         return 
-        #         # sleep_time = 30
-        #     case 4:
-        #         return
-        #         # sleep_time = 20
-        #     case 5:
-        #         sleep_time = 10
-        #     case _:
-        #         sleep_time = 50
-        # if int(self.id) == 5:
-        #     sleep_time = 50
-        # elif int(self.id) == 1:
-        #     sleep_time = 40
         await asyncio.sleep(sleep_time)
         logging.warning(f"-----------------{sleep_time}---{int(self.id)}--------------")
         logging.error("----------------MORS PRINCIPIUM EST----------------")
